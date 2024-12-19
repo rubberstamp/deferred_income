@@ -24,7 +24,7 @@ ActiveRecord::Schema[8.0].define(version: 2024_12_17_221326) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "team_id"
-    t.index ["transaction_id"], name: "index_charges_on_transaction_id", unique: true
+    t.index ["team_id", "transaction_id"], name: "index_charges_on_team_id_and_transaction_id", unique: true
   end
 
   create_table "integrations", force: :cascade do |t|

@@ -18,6 +18,7 @@ class TeamsController < ApplicationController
         @team = current_user.teams.new(team_params)
         if @team.save
             redirect_to root_path, notice: 'Team was successfully created.'
+            current_user.update_attribute(:current_team_id, @team.id)
         else
             render :new
         end

@@ -1,5 +1,13 @@
 class HomeController < ApplicationController
+
+  before_action :authenticate_user!, except: [:index]
+  before_action :has_a_team?, except: [:index]
+  
   def index
+    redirect_to '/dashboard' if signed_in?
+  end
+
+  def dashboard
     # a table with months and mrr
     start_date = current_user.current_team.charges.minimum(:recognition_start_date)
     end_date = current_user.current_team.charges.maximum(:recognition_end_date)
@@ -15,4 +23,6 @@ class HomeController < ApplicationController
       current_month = current_month.next_month
     end
   end
+
+
 end

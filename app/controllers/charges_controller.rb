@@ -1,13 +1,42 @@
 require 'csv'
 class ChargesController < ApplicationController
+
+    # make sure they are logged in
+    before_action :authenticate_user!
+    before_action :has_a_team?, except: [:index]
+
+
+
+    
+
   def import
     if params[:file].present?
-      CSV.foreach(params[:file].path, headers: true) do |row|
-        current_user.current_team.charges.create!(row.to_hash)
+      begin
+        CSV.foreach(params[:file].path, headers: true) do |row|
+          charge_params = {
+            team_id: current_user.current_team.id,
+            source: row['source'],
+            transaction_id: row['transaction_id'],
+            amount: row['amount'],
+            currency: row['currency'],
+            recognition_start_date: row['recognition_start_date'],
+            recognition_end_date: row['recognition_end_date']
+          }
+  
+          charge = current_user.current_team.charges.new(charge_params)
+  
+          unless charge.save
+            # Log errors for this charge
+            logger.error("Failed to save charge: #{charge.errors.full_messages.join(", ")}")
+          end
+        end
+  
+        redirect_to charges_path, notice: 'Charges were successfully imported.'
+      rescue StandardError => e
+        redirect_to new_charge_path, alert: "An error occurred: #{e.message}"
       end
-      redirect_to charges_path, notice: 'CSV imported successfully.'
     else
-      redirect_to charges_path, alert: 'Please upload a valid CSV file.'
+      redirect_to new_charge_path, alert: "Please upload a file."
     end
   end
 

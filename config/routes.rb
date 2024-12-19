@@ -13,8 +13,12 @@ Rails.application.routes.draw do
 
   resources :teams
   post 'set_current_team', to: 'teams#set_current'
+  get 'dashboard', to: 'home#dashboard'
   resources :charges do
-    collection { post :import }
+    collection { 
+      post :import
+      get :new_import
+    }
   end
   # Defines the root path route ("/")
   root "home#index"
