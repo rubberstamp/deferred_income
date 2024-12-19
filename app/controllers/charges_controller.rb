@@ -73,6 +73,12 @@ class ChargesController < ApplicationController
         @count = @charges.where("amount > ?", 0).count
         @mrr = @charges.collect { |charge| charge.mrr }.sum
         @charges = @charges.order(recognition_start_date: :asc).page(params[:page]).per(100)
+        @added_amount = @charges.collect { |charge| charge.usd_amount }.sum
+        if date.present?
+          @added_amount = current_user.current_team.charges.where('recognition_start_date between ? AND ?', date.beginning_of_month, date.end_of_month).sum(:amount_cents) / 100
+        else
+          @added_amount = current_user.current_team.charges.sum(:amount_cents) / 100
+        end
         format.html
     end
   end

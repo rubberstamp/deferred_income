@@ -2,7 +2,7 @@ class HomeController < ApplicationController
 
   before_action :authenticate_user!, except: [:index]
   before_action :has_a_team?, except: [:index]
-  
+
   def index
     redirect_to '/dashboard' if signed_in?
   end
@@ -19,7 +19,11 @@ class HomeController < ApplicationController
     # set @mrr_by_month to a hash of months and mrr
     current_month = start_date
     while( current_month <= end_date )
-      @mrr_by_month[current_month] = current_user.current_team.mrr(current_month)
+      month = current_month
+      mrr = current_user.current_team.mrr(current_month)
+      added_amount = current_user.current_team.added_amount(current_month)
+      # add month and mrr to @mrr_by_month
+      @mrr_by_month[month] = { mrr: mrr, added_amount: added_amount }
       current_month = current_month.next_month
     end
   end

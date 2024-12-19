@@ -112,6 +112,8 @@ GEM
     devise-jwt (0.12.1)
       devise (~> 4.0)
       warden-jwt_auth (~> 0.10)
+    dockerfile-rails (1.6.25)
+      rails (>= 3.0.0)
     dotenv (3.1.6)
     drb (2.2.1)
     dry-auto_inject (1.0.1)
@@ -186,6 +188,15 @@ GEM
     matrix (0.4.2)
     mini_mime (1.1.5)
     minitest (5.25.4)
+    monetize (1.13.0)
+      money (~> 6.12)
+    money (6.19.0)
+      i18n (>= 0.6.4, <= 2)
+    money-rails (1.15.0)
+      activesupport (>= 3.0)
+      monetize (~> 1.9)
+      money (~> 6.13)
+      railties (>= 3.0)
     msgpack (1.7.5)
     net-imap (0.5.1)
       date
@@ -393,10 +404,12 @@ DEPENDENCIES
   debug
   devise
   devise-jwt
+  dockerfile-rails (>= 1.6)
   importmap-rails
   jbuilder
   kamal
   kaminari
+  money-rails
   propshaft
   puma (>= 5.0)
   rails (~> 8.0.1)

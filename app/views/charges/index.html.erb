@@ -14,15 +14,20 @@
                 </dd>
             </div>
             <div class="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                <dt class="text-sm font-medium text-gray-500">Total MRR</dt>
+                <dt class="text-sm font-medium text-gray-500">Recognised Amount</dt>
                 <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
                     <%= number_to_currency @mrr %>
+                </dd>
+            </div>
+            <div class="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                <dt class="text-sm font-medium text-gray-500">Added Amount</dt>
+                <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                    <%= number_to_currency @added_amount %>
                 </dd>
             </div>
         </dl>
     </div>
 </div>
-
 
 
 
@@ -70,7 +75,7 @@
         <tr class="hover:bg-gray-50">
           <td class="px-4 py-2 border-b border-gray-300"><%= charge.source %></td>
           <td class="px-4 py-2 border-b border-gray-300"><%= charge.transaction_id %></td>
-          <td class="px-4 py-2 border-b border-gray-300"><%= number_to_currency charge.amount %></td>
+          <td class="px-4 py-2 border-b border-gray-300"><%= charge.amount.format %></td>
           <td class="px-4 py-2 border-b border-gray-300"><%= charge.currency %></td>
           <td class="px-4 py-2 border-b border-gray-300"><%= charge.description %></td>
           <td class="px-4 py-2 border-b border-gray-300"><%= number_to_currency charge.usd_amount %></td>
@@ -79,7 +84,7 @@
           <td class="px-4 py-2 border-b border-gray-300"><%= l charge.recognition_end_date unless charge.recognition_end_date.nil? %></td>
           <td class="px-4 py-2 border-b border-gray-300">
             <%= link_to 'Edit', edit_charge_path(charge), class: 'text-blue-500' %>
-            <%= link_to 'Delete', charge, method: :delete, data: { confirm: 'Are you sure?' }, class: 'text-red-500' %>
+            <%= link_to 'Delete', charge, method: :delete, data: { turbo_method: :delete, turbo_confirm: 'Are you sure?' }, class: 'text-red-500' %>
           </td>
         </tr>
       <% end %>

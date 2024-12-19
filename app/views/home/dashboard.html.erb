@@ -5,13 +5,24 @@
 </p>
 
 
-<h2> Calendar</h2>
-<div class="grid grid-cols-3 gap-4">
-  <% @mrr_by_month.each do |month, total_mrr| %>
-    <div class="border border-gray-300 p-4 rounded-lg">
-      <h2 class="font-bold text-lg"><%= month.strftime("%B %Y") %></h2>
-      <p class="text-xl"><%= link_to  number_to_currency(total_mrr), charges_path(date: month) %></p>
-    </div>
-  <% end %>
-</div>
+<table class="table-auto w-full">
+  <thead>
+    <tr>
+      <th class="px-4 py-2">Month</th>
+      <th class="px-4 py-2">Recognised Amount</th>
+      <th class="px-4 py-2">Added Amount</th>
+      <th class="px-4 py-2">Change</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @mrr_by_month.each do |month, value| %>
+      <tr>
+        <td class="border px-4 py-2"><%= link_to month.strftime("%B %Y"), charges_path(date: month) %></td>
+        <td class="border px-4 py-2"><%= number_to_currency value[:mrr] %></td>
+        <td class="border px-4 py-2"><%= number_to_currency value[:added_amount] %></td>
+        <td class="border px-4 py-2"><%= number_to_currency value[:mrr] - value[:added_amount] %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
 </div>

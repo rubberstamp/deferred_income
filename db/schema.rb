@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2024_12_17_221326) do
+ActiveRecord::Schema[8.0].define(version: 2024_12_19_210049) do
   create_table "charges", force: :cascade do |t|
     t.string "source"
     t.string "transaction_id"
@@ -24,6 +24,8 @@ ActiveRecord::Schema[8.0].define(version: 2024_12_17_221326) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "team_id"
+    t.integer "base_amount"
+    t.integer "amount_cents"
     t.index ["team_id", "transaction_id"], name: "index_charges_on_team_id_and_transaction_id", unique: true
   end
 

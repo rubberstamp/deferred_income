@@ -2,15 +2,12 @@ class Charge < ApplicationRecord
 
   belongs_to :team
 
+  monetize :amount_cents, with_model_currency: :currency
+
+
 
     def usd_amount
-        if self.currency == "usd"
-            self.amount
-        elsif self.currency == "gbp"
-            self.amount * 1.3
-        elsif self.currency == "eur"
-            self.amount * 0.9
-        end
+        amount.exchange_to('USD').amount
     end
 
 
