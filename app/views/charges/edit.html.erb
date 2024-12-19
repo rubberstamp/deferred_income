@@ -1,0 +1,8 @@
+<h1>Edit</h1>
+
+<%= form_with(model: @charge, local: true) do |form| %>
+    <%= render 'form', form: form %>
+    <div class="mt-4">
+        <%= form.submit "Update Charge", class: 'btn btn-primary' %>
+    </div>
+<% end %>

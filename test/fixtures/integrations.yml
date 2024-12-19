@@ -1,0 +1,13 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  integration_type: MyString
+  api_key: MyString
+  user: one
+  team: one
+
+two:
+  integration_type: MyString
+  api_key: MyString
+  user: two
+  team: two

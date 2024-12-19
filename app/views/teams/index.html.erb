@@ -1,0 +1,11 @@
+<h1 class="text-2xl font-bold mb-4">Teams</h1>
+<%= link_to 'New Team', new_team_path, class: 'btn btn-primary' %>
+<ul>
+  <% @teams.each do |team| %>
+    <li>
+      <%= link_to team.name, team %>
+      <%= link_to 'Edit', edit_team_path(team), class: 'text-blue-500' %>
+      <%= link_to 'Delete', team, method: :delete, data: { confirm: 'Are you sure?' }, class: 'text-red-500' %>
+    </li>
+  <% end %>
+</ul>

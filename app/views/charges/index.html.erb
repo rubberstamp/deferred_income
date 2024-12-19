@@ -1,0 +1,92 @@
+<h1 class="text-2xl font-bold mb-4">Charges</h1>
+<%= link_to "New Charge", new_charge_path, class: "mb-4 inline-block bg-blue-500 text-white px-4 py-2 rounded" %>
+<!-- panel containing dashbooard info -->
+<div class="bg-white shadow overflow-hidden sm:rounded-lg">
+    <div class="px-4 py-5 sm:px-6">
+        <h3 class="text-lg leading-6 font-medium text-gray-900">Dashboard</h3>
+    </div>
+    <div class="border-t border-gray-200">
+        <dl>
+            <div class="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                <dt class="text-sm font-medium text-gray-500">Total Charges</dt>
+                <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                    <%= @count %>
+                </dd>
+            </div>
+            <div class="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                <dt class="text-sm font-medium text-gray-500">Total MRR</dt>
+                <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                    <%= number_to_currency @mrr %>
+                </dd>
+            </div>
+        </dl>
+    </div>
+</div>
+
+
+
+
+
+<%= form_with url: charges_path, method: :get, local: true do %>
+  <div class="flex space-x-4 mb-4">
+    <div>
+      <%= label_tag :source, "Source", class: "block text-sm font-medium text-gray-700" %>
+      <% current_user.current_team.sources.each do |source| %>
+        <div class="flex items-center">
+          <%= check_box_tag "sources[]", source, params[:sources].try(:include?, source) %>
+          <%= label_tag source, source, class: "ml-2 text-sm font-medium text-gray-700" %>
+        </div>
+      <% end %>
+    </div>
+    <div>
+      <%= label_tag :date, "Date", class: "block text-sm font-medium text-gray-700" %>
+      <%= date_field_tag :date, params[:date] || Date.today.beginning_of_month, class: "mt-1 block w-full border-gray-300 rounded-md shadow-sm"  %>
+    </div>
+    <div>
+      <%= submit_tag "Filter", class: "mt-6 bg-blue-500 text-white px-4 py-2 rounded" %>
+    </div>
+  </div>
+<% end %>
+<%= link_to "CSV", charges_path(request.query_parameters.merge(format: :csv)), class: "mb-4 inline-block bg-green-500 text-white px-4 py-2 rounded" %>
+
+<div class="overflow-x-auto">
+  <table class="min-w-full bg-white border border-gray-300">
+    <thead>
+      <tr class="bg-gray-100 text-gray-700">
+        <th class="px-4 py-2 border-b border-gray-300 text-left">Source</th>
+        <th class="px-4 py-2 border-b border-gray-300 text-left">Transaction ID</th>
+        <th class="px-4 py-2 border-b border-gray-300 text-left">Amount</th>
+        <th class="px-4 py-2 border-b border-gray-300 text-left">Currency</th>
+        <th class="px-4 py-2 border-b border-gray-300 text-left">Description</th>
+        <th class="px-4 py-2 border-b border-gray-300 text-left">USD Amount</th>
+        <th class="px-4 py-2 border-b border-gray-300 text-left">MRR</th>
+        <th class="px-4 py-2 border-b border-gray-300 text-left">Start</th>
+        <th class="px-4 py-2 border-b border-gray-300 text-left">End</th>
+        <th class="px-4 py-2 border-b border-gray-300 text-left">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @charges.each do |charge| %>
+        <tr class="hover:bg-gray-50">
+          <td class="px-4 py-2 border-b border-gray-300"><%= charge.source %></td>
+          <td class="px-4 py-2 border-b border-gray-300"><%= charge.transaction_id %></td>
+          <td class="px-4 py-2 border-b border-gray-300"><%= number_to_currency charge.amount %></td>
+          <td class="px-4 py-2 border-b border-gray-300"><%= charge.currency %></td>
+          <td class="px-4 py-2 border-b border-gray-300"><%= charge.description %></td>
+          <td class="px-4 py-2 border-b border-gray-300"><%= number_to_currency charge.usd_amount %></td>
+          <td class="px-4 py-2 border-b border-gray-300"><%= number_to_currency charge.mrr %></td>
+          <td class="px-4 py-2 border-b border-gray-300"><%= l charge.recognition_start_date unless charge.recognition_start_date.nil? %></td>
+          <td class="px-4 py-2 border-b border-gray-300"><%= l charge.recognition_end_date unless charge.recognition_end_date.nil? %></td>
+          <td class="px-4 py-2 border-b border-gray-300">
+            <%= link_to 'Edit', edit_charge_path(charge), class: 'text-blue-500' %>
+            <%= link_to 'Delete', charge, method: :delete, data: { confirm: 'Are you sure?' }, class: 'text-red-500' %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
+
+<div class="mt-4">
+  <%= paginate @charges %>
+</div>

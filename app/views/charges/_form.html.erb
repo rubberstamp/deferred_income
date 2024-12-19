@@ -1,0 +1,39 @@
+      <% if @charge.errors.any? %>
+        <div class="mb-4">
+          <ul class="list-disc pl-5 text-red-600">
+            <% @charge.errors.full_messages.each do |message| %>
+              <li><%= message %></li>
+            <% end %>
+          </ul>
+        </div>
+      <% end %>
+
+      <div class="mb-4">
+        <%= form.label :source, class: "block text-sm font-medium text-gray-700" %>
+        <%= form.text_field :source, class: "mt-1 block w-full border-gray-300 rounded-md shadow-sm" %>
+      </div>
+
+      <div class="mb-4">
+        <%= form.label :transaction_id, class: "block text-sm font-medium text-gray-700" %>
+        <%= form.text_field :transaction_id, class: "mt-1 block w-full border-gray-300 rounded-md shadow-sm" %>
+      </div>
+
+      <div class="mb-4">
+        <%= form.label :amount, class: "block text-sm font-medium text-gray-700" %>
+        <%= form.number_field :amount, class: "mt-1 block w-full border-gray-300 rounded-md shadow-sm" %>
+      </div>
+
+      <div class="mb-4">
+        <%= form.label :currency, class: "block text-sm font-medium text-gray-700" %>
+        <%= form.select :currency, current_user.current_team.currencies.map { |c| [c, c] }, {}, class: "mt-1 block w-full border-gray-300 rounded-md shadow-sm" %>
+      </div>
+
+      <div class="mb-4">
+        <%= form.label :recognition_start_date, class: "block text-sm font-medium text-gray-700" %>
+        <%= form.date_select :recognition_start_date, class: "mt-1 block w-full border-gray-300 rounded-md shadow-sm" %>
+      </div>
+
+      <div class="mb-4">
+        <%= form.label :recognition_end_date, class: "block text-sm font-medium text-gray-700" %>
+        <%= form.date_select :recognition_end_date, class: "mt-1 block w-full border-gray-300 rounded-md shadow-sm" %>
+      </div>
